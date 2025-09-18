@@ -25,6 +25,20 @@ public class KanjiServiceImpl implements KanjiService {
     private final OnyomiRepository onRepo;
 
     @Override
+    public KanjiDto readById(Long id) {
+        KanjiEntity k = kanjiRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Kanji not found: " + id));
+
+        // 간단히 DTO 변환 (필요시 확장 가능)
+        return new KanjiDto(
+                k.getId(),
+                k.getGlyph(),
+                k.getMeaning(),
+                k.getKunyomi(),
+                k.getOnyomi()
+        );
+    }
+    @Override
     public List<KanjiDto> getListAll() {
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         List<KanjiEntity> entityList = kanjiRepo.findAll(sort);

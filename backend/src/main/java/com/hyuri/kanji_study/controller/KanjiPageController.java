@@ -32,21 +32,4 @@ public class KanjiPageController {
         return kanjiService.readById(id);
     }
 
-/*
-    // Thymeleaf
-    @GetMapping("/list")
-    public List<KanjiDto> list() {
-        log.info(">>> GET /kanji/list");
-        List<KanjiDto> list = kanjiService.getListAll();
-        log.debug("result size = {}", list.size());
-        return list; // JSON으로 응답
-    }
-    @GetMapping("/{id}")
-    public String detail(@PathVariable Long id, Model model) {
-        KanjiDto dto = kanjiService.readById(id);
-        model.addAttribute("kanji", dto);
-        log.debug("dto = {}",dto);
-        return "kanji-detail";
-    }
-    */
 }

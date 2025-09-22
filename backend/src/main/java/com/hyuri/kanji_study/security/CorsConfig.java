@@ -11,7 +11,7 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry r) {
         r.addMapping("/api/**")
                 .allowedOrigins(
-                        "http://localhost:3000",
+                        "http://localhost:5173",
                         "https://hyurim.github.io"          // 사용자 페이지
                 )
                 .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")

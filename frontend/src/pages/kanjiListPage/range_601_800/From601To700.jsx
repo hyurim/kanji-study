@@ -1,0 +1,5 @@
+const From601To700 = () => {
+	return <div>From601To750 Page</div>;
+  };
+  
+  export default From601To700;

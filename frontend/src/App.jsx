@@ -1,68 +1,49 @@
-import { useEffect, useState } from "react";
+import { Routes, Route, NavLink } from "react-router-dom";
+import Home from "./pages/Home";
+import Studylist from "./pages/StudyList";
+import Savelist from "./pages/SaveList";
 
-export default function App() {
-  const [list, setList] = useState([]);
-  const [idx, setIdx] = useState(0);      // 현재 위치
-  const [loading, setLoading] = useState(true);
-  const [err, setErr] = useState(null);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${import.meta.env.VITE_API_BASE}/api/kanji/list`)
-      .then((r) => r.json())
-      .then((data) => {
-        setList(data || []);
-        setIdx(0); // 처음은 0번
-      })
-      .catch((e) => setErr(e?.message || "load error"))
-      .finally(() => setLoading(false));
-  }, []);
-
-  const hasData = list.length > 0;
-  const cur = hasData ? list[idx] : null;
-
-  const next = () => {
-    if (!hasData) return;
-    setIdx((prev) => (prev + 1) % list.length); // 마지막이면 처음으로
-  };
-
-  const prev = () => {
-    if (!hasData) return;
-    setIdx((prev) => (prev - 1 + list.length) % list.length); // 음수 방지
-  };
-
+const App = () => {
   return (
-    <div style={{ padding: 16, maxWidth: 480 }}>
-      <h1>Kanji Viewer</h1>
+    <div style={{ maxWidth: 640, margin: "0 auto", padding: 16 }}>
+      <header style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 16 }}>
+        <h1 style={{ fontSize: 22, marginRight: "auto" }}>Kanji Study</h1>
+        <NavLink to="/" end style={linkStyle}>
+          홈
+        </NavLink>
+        <NavLink to="/studylist" style={linkStyle}>
+          학습
+        </NavLink>
+        <NavLink to="/savelist" style={linkStyle}>
+          저장함(미구현)
+        </NavLink>
+      </header>
 
-      {loading && <div>불러오는 중…</div>}
-      {err && <div style={{ color: "crimson" }}>에러: {err}</div>}
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/studylist" element={<Studylist />} />
+        <Route path="/savelist" element={<Savelist />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
 
-      {!loading && !hasData && <div>데이터가 없습니다.</div>}
-
-      {cur && (
-        <div
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: 12,
-            padding: 16,
-            marginBottom: 12,
-          }}
-        >
-          <div style={{ fontSize: 48, lineHeight: 1.2 }}>{cur.glyph}</div>
-          <div style={{ fontSize: 18, marginTop: 8 }}>{cur.meaning}</div>
-          <div style={{ marginTop: 8 }}>훈독: {cur.kunyomi || "-"}</div>
-          <div>음독: {cur.onyomi || "-"}</div>
-
-          <div style={{ marginTop: 16, display: "flex", gap: 8 }}>
-            <button onClick={prev}>이전</button>
-            <button onClick={next}>다음</button>
-            <span style={{ marginLeft: "auto" }}>
-              {idx + 1} / {list.length}
-            </span>
-          </div>
-        </div>
-      )}
+      <footer style={{ marginTop: 24, fontSize: 12, color: "#666" }}>
+        © {new Date().getFullYear()} Kanji Study
+      </footer>
     </div>
   );
 }
+
+export default App;
+
+const linkStyle = ({ isActive }) => ({
+	padding: "6px 10px",
+	borderRadius: 8,
+	textDecoration: "none",
+	border: "1px solid #ddd",
+	color: isActive ? "white" : "#333",
+	background: isActive ? "#004488" : "transparent",
+  });
+  
+const NotFound = () => {
+	return <div>페이지를 찾을 수 없습니다.</div>;
+  } 

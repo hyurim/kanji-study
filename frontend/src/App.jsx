@@ -2,6 +2,7 @@ import { Routes, Route, NavLink } from "react-router-dom";
 import Home from "./pages/Home";
 import Studylist from "./pages/StudyList";
 import Savelist from "./pages/SaveList";
+import Study from "./pages/Study";
 
 const App = () => {
   return (
@@ -17,6 +18,9 @@ const App = () => {
         <NavLink to="/savelist" style={linkStyle}>
           저장함(미구현)
         </NavLink>
+		<NavLink to="/study" style={linkStyle}>
+          테스트
+        </NavLink>
       </header>
 
       <Routes>
@@ -24,6 +28,7 @@ const App = () => {
         <Route path="/studylist" element={<Studylist />} />
         <Route path="/savelist" element={<Savelist />} />
         <Route path="*" element={<NotFound />} />
+		<Route path="/study" element={<Study />} />
       </Routes>
 
       <footer style={{ marginTop: 24, fontSize: 12, color: "#666" }}>

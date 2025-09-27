@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class KanjiDto {
+public class OnyomiDto {
     private Long id;
-    private String glyph;
-    private String meaning;
-    private String kunyomi;
-    private String onyomi;
-
+    private Long kanji_id;
+    private String onGlyph;
+    private String onKana;
+    private String onMeaning;
 }

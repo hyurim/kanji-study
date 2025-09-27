@@ -6,6 +6,8 @@ CREATE TABLE kanji (
   meaning     TEXT NOT NULL            	-- 뜻 
 );
 
+---------------------------------
+-- 훈독 단어
 CREATE TABLE kanji_kunyomi (
   id          BIGSERIAL PRIMARY KEY,
   kanji_id    BIGINT NOT NULL REFERENCES kanji(id) ON DELETE CASCADE,
@@ -14,6 +16,9 @@ CREATE TABLE kanji_kunyomi (
   kun_meaning	  TEXT 						-- 훈독 단어 뜻
 );
 
+---------------------------------
+
+-- 음독 단어
 CREATE TABLE kanji_onyomi (
   id          BIGSERIAL PRIMARY KEY,
   kanji_id    BIGINT NOT NULL REFERENCES kanji(id) ON DELETE CASCADE,
@@ -22,21 +27,35 @@ CREATE TABLE kanji_onyomi (
   on_meaning  TEXT 						-- 훈독 단어 뜻
 );
 
--- 문장 
-CREATE TABLE sentence (
+---------------------------------
+
+-- 훈독 문장 
+CREATE TABLE kun_sentence (
   id            BIGSERIAL PRIMARY KEY,
   kanji_id    BIGINT NOT NULL REFERENCES kanji(id) ON DELETE CASCADE,
-  jp_text       TEXT,           		-- 일본어 원문
-  kr_text       TEXT                    -- 한국어 번역(선택)
+  kun_jp_text       TEXT,           		-- 일본어 원문
+  kun_kr_text       TEXT                    -- 한국어 번역(선택)
 );
 
+---------------------------------
 
-INSERT INTO kanji (glyph, kunyomi, onyomi, meaning) VALUES
-('学', 'まなぶ', 'がく, がっ', '배우다, 학문'),
-('火', 'ひ', 'か', '불'),
-('水', 'みず', 'すい', '물'),
-('木', 'き', 'もく, ぼく', '나무'),
-('山', 'やま', 'さん', '산');
+-- 음독 문장
+CREATE TABLE on_sentence (
+  id            BIGSERIAL PRIMARY KEY,
+  kanji_id    BIGINT NOT NULL REFERENCES kanji(id) ON DELETE CASCADE,
+  on_jp_text       TEXT,           		-- 일본어 원문
+  on_kr_text       TEXT                    -- 한국어 번역(선택)
+);
+
+---------------------------------
+
+select * from kanji;
+select * from kanji_onyomi;
+select * from kanji_kunyomi;
+select * from on_sentence;
+select * from kun_sentence;
+
+---------------------------------
 
 -- 유저 테이블
 CREATE TABLE users (
@@ -56,4 +75,3 @@ CREATE TABLE user_saved_kanji (
     kanji_id INT REFERENCES kanji(kanji_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-

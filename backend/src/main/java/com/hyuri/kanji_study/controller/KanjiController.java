@@ -1,7 +1,5 @@
-// src/main/java/com/hyuri/kanji_study/controller/KanjiPageController.java
 package com.hyuri.kanji_study.controller;
 
-import org.springframework.ui.Model;
 import com.hyuri.kanji_study.dto.KanjiDto;
 import com.hyuri.kanji_study.service.KanjiService;
 import lombok.RequiredArgsConstructor;
@@ -17,19 +15,19 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/api/kanji")
-public class KanjiPageController {
+public class KanjiController {
 
     private final KanjiService kanjiService;
 
     @GetMapping("/list")
     public List<KanjiDto> list() {
-        return kanjiService.getListAll();
+        return kanjiService.getKanjiListAll();
     }
 
     @GetMapping("/{id}")
-    public KanjiDto detail(@PathVariable Long id) {
-        // 필요시 상세 DTO로 교체 가능
-        return kanjiService.readById(id);
+    public KanjiDto getKanji(@PathVariable Long id) {
+        return kanjiService.readByKanjiId(id);
     }
+
 
 }

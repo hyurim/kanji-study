@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import Studylist from "./pages/StudyList";
 import Savelist from "./pages/SaveList";
 import Study from "./pages/Study";
+import PageTest from "./pages/PageTest";
 
 const App = () => {
   return (
@@ -21,6 +22,9 @@ const App = () => {
 		<NavLink to="/study" style={linkStyle}>
           테스트
         </NavLink>
+		<NavLink to="/pagetest" style={linkStyle}>
+          단어 문장 테스트
+        </NavLink>
       </header>
 
       <Routes>
@@ -29,6 +33,7 @@ const App = () => {
         <Route path="/savelist" element={<Savelist />} />
         <Route path="*" element={<NotFound />} />
 		<Route path="/study" element={<Study />} />
+		<Route path="/pagetest" element={<PageTest />} />
       </Routes>
 
       <footer style={{ marginTop: 24, fontSize: 12, color: "#666" }}>

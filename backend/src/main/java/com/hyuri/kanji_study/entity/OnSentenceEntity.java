@@ -32,8 +32,8 @@ public class OnSentenceEntity {
     private KanjiEntity kanji;
 
     @Column(name = "on_jp_text")   // 음독 단어 문장
-    private String ounJpText;
+    private String onJpText;
 
     @Column(name = "on_kr_text")    // 문장 뜻
-    private String ounKrText;
+    private String onKrText;
 }

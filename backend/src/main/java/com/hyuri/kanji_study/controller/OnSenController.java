@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/api/onSent")
+@RequestMapping("/api/onSentence")
 public class OnSenController {
 
     private final KanjiService kanjiService;

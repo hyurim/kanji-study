@@ -14,7 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/api/kunSent")
+@RequestMapping("/api/kunSentence")
 public class KunSenController {
 
     private final KanjiService kanjiService;

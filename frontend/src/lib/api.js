@@ -27,13 +27,13 @@ export async function fetchKunyomiById(id) {
 
 //kunSentence
 export async function fetchKunSentenceList() {
-  const res = await fetch(`${API_BASE}/api/kunSent/list`);
+  const res = await fetch(`${API_BASE}/api/kunSentence/list`);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }
 
 export async function fetchKunSentenceById(id) {
-  const res = await fetch(`${API_BASE}/api/kunSent/${id}`);
+  const res = await fetch(`${API_BASE}/api/kunSentence/${id}`);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }
@@ -52,13 +52,13 @@ export async function fetchOnyomiById(id) {
 
 //onSentence
 export async function fetchOnSentenceList() {
-  const res = await fetch(`${API_BASE}/api/onSent/list`);
+  const res = await fetch(`${API_BASE}/api/onSentence/list`);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }
 
 export async function fetchOnSentenceById(id) {
-  const res = await fetch(`${API_BASE}/api/onSent/${id}`);
+  const res = await fetch(`${API_BASE}/api/onSentence/${id}`);
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }

@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface OnyomiRepository extends JpaRepository<OnyomiEntity, Long> {
-    List<OnyomiEntity> findByKanjiId(Long kanjiId);
+    List<OnyomiEntity> findAllByKanji_Id(Long kanjiId);
 }

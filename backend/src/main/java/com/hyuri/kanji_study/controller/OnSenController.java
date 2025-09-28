@@ -1,6 +1,6 @@
 package com.hyuri.kanji_study.controller;
 
-import com.hyuri.kanji_study.dto.KunyomiDto;
+import com.hyuri.kanji_study.dto.OnSentenceDto;
 import com.hyuri.kanji_study.service.KanjiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,19 +14,19 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/api/kunyomi")
-public class KunyomiController {
+@RequestMapping("/api/onSent")
+public class OnSenController {
 
     private final KanjiService kanjiService;
 
     @GetMapping("/list")
-    public List<KunyomiDto> list() {
-        return kanjiService.getKunyomiListAll();
+    public List<OnSentenceDto> list() {
+        return kanjiService.getOnSenListAll();
     }
 
     @GetMapping("/{id}")
-    public KunyomiDto getKunyomi(@PathVariable Long id) {
-        return kanjiService.readByKunyomiId(id);
+    public OnSentenceDto getOnSen(@PathVariable Long id) {
+        return kanjiService.readByOnSenId(id);
     }
 
 }

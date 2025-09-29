@@ -145,7 +145,7 @@ const Study = () => {
           }}
         >
           <div style={{ fontSize: 48, lineHeight: 1.2 }}>{cur.glyph}</div>
-          <div style={{ fontSize: 18, marginTop: 8 }}>{cur.meaning} {cur.reading}</div>
+          <div style={{ fontSize: 18, marginTop: 8 }}>뜻 : {cur.meaning} 음 : {cur.reading}</div>
           <div style={{ marginTop: 8 }}>훈독: {cur.kunyomi || "-"}</div>
           <div>음독: {cur.onyomi || "-"}</div>
 

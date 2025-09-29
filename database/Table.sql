@@ -5,6 +5,8 @@ CREATE TABLE kanji (
   onyomi	  TEXT,						-- 음독
   meaning     TEXT NOT NULL            	-- 뜻 
 );
+ALTER TABLE kanji
+ADD COLUMN reading VARCHAR(100) NOT NULL;
 
 ---------------------------------
 -- 훈독 단어

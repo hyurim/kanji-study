@@ -47,6 +47,7 @@ public class KanjiServiceImpl implements KanjiService {
                 k.getId(),
                 k.getGlyph(),
                 k.getMeaning(),
+                k.getReading(),
                 k.getKunyomi(),
                 k.getOnyomi()
         );
@@ -63,6 +64,7 @@ public class KanjiServiceImpl implements KanjiService {
                     .id(entity.getId())
                     .glyph(entity.getGlyph())
                     .meaning(entity.getMeaning())
+                    .reading(entity.getReading())
                     .kunyomi(entity.getKunyomi())
                     .onyomi(entity.getOnyomi())
                     .build();

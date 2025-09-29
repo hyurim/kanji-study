@@ -48,6 +48,10 @@ public class KanjiEntity {
     @Column(nullable = false)
     private String meaning;
 
+    /** 음 */
+    @Column(name = "reading", nullable = false)
+    private String reading;
+
     @OneToMany(mappedBy = "kanji", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<KunyomiEntity> kunyomiWords = new ArrayList<>();

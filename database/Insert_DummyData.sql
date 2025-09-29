@@ -7,7 +7,21 @@ INSERT INTO kanji (glyph, kunyomi, onyomi, meaning) VALUES
 ('山', 'やま', 'さん', '산');
 
 select * from kanji;
-
+UPDATE kanji
+SET reading = '학1'
+WHERE glyph = '学';
+UPDATE kanji
+SET reading = '화'
+WHERE glyph = '火';
+UPDATE kanji
+SET reading = '수'
+WHERE glyph = '水';
+UPDATE kanji
+SET reading = '목'
+WHERE glyph = '木';
+UPDATE kanji
+SET reading = '산'
+WHERE glyph = '山';
 ---------------------------------
 -- 훈독 단어
 INSERT INTO kanji_kunyomi (kanji_id, kun_glyph, kun_kana, kun_meaning)

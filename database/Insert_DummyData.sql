@@ -22,6 +22,9 @@ WHERE glyph = '木';
 UPDATE kanji
 SET reading = '산'
 WHERE glyph = '山';
+
+INSERT INTO kanji (id, glyph, meaning, reading, kunyomi, onyomi)
+VALUES (6, '人', '사람', '인', 'ひと', 'じん, にん');
 ---------------------------------
 -- 훈독 단어
 INSERT INTO kanji_kunyomi (kanji_id, kun_glyph, kun_kana, kun_meaning)
@@ -31,6 +34,10 @@ VALUES
   ((SELECT id FROM kanji WHERE glyph='水'), '水', 'みず', '물'),
   ((SELECT id FROM kanji WHERE glyph='木'), '木', 'き', '나무'),
   ((SELECT id FROM kanji WHERE glyph='山'), '山', 'やま', '산');
+
+INSERT INTO kanji_kunyomi (id, kanji_id, kun_glyph, kun_kana, kun_meaning)
+VALUES 
+(6, 6, '人々', 'ひとびと', '사람들');
 
 ---------------------------------
 
@@ -42,6 +49,10 @@ VALUES
   ((SELECT id FROM kanji WHERE glyph='水'), '水道', 'すいどう', '수도'),
   ((SELECT id FROM kanji WHERE glyph='木'), '木曜日', 'もくようび', '목요일'),
   ((SELECT id FROM kanji WHERE glyph='山'), '富士山', 'ふじさん', '후지산');
+
+INSERT INTO kanji_onyomi (id, kanji_id, on_glyph, on_kana, on_meaning)
+VALUES 
+(6, 6, '人口', 'じんこう', '인구');
 ---------------------------------
 
 -- 훈독 문장 
@@ -52,6 +63,10 @@ VALUES
   ((SELECT id FROM kanji WHERE glyph='水'), '水を一杯ください。', '물 한 잔 주세요.'),
   ((SELECT id FROM kanji WHERE glyph='木'), '木の下で休みましょう。', '나무 아래에서 쉽시다.'),
   ((SELECT id FROM kanji WHERE glyph='山'), '山に登るのが好きです。', '산에 오르는 것을 좋아합니다.');
+
+INSERT INTO kun_sentence (id, kanji_id, kun_jp_text, kun_kr_text)
+VALUES 
+(6, 6, '人は誰でも間違える。', '사람은 누구나 실수한다.');
 
 ---------------------------------
 
@@ -64,4 +79,7 @@ VALUES
   ((SELECT id FROM kanji WHERE glyph='木'), '木曜日は友達と映画を見る。', '목요일에는 친구와 영화를 본다.'),
   ((SELECT id FROM kanji WHERE glyph='山'), '富士山は日本で一番高い山です。', '후지산은 일본에서 가장 높은 산입니다.');
 
+INSERT INTO on_sentence (id, kanji_id, on_jp_text, on_kr_text)
+VALUES 
+(6, 6, '東京の人口は多いです。', '도쿄의 인구는 많습니다.');
 ---------------------------------

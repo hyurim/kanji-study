@@ -61,19 +61,20 @@ select * from kun_sentence;
 
 -- 유저 테이블
 CREATE TABLE users (
-    user_id SERIAL PRIMARY KEY, 					-- 내부 식별용
+    user_id BIGSERIAL PRIMARY KEY, 					-- 내부 식별용
     login_id VARCHAR(50), 							-- 로그인용 아이디
     password VARCHAR(255), 							-- 비밀번호
     nickname VARCHAR(50), 							-- 닉네임
-    last_study_date TIMESTAMP, 						-- 마지막 로그인 날짜
     streak_days INT, 								-- 연속으로 로그인한 날짜
     role VARCHAR(20), 								-- 유저 구분 (ADMIN은 직접 추가)
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP 	-- 생성 날짜
 );
 -- 유저가 저장한 한자 
 CREATE TABLE user_saved_kanji (
-    id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(user_id),
-    kanji_id INT REFERENCES kanji(kanji_id),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT REFERENCES users(user_id),
+    kanji_id BIGINT REFERENCES kanji(id)
 );
+
+ DROP TABLE users;
+ DROP TABLE user_saved_kanji;

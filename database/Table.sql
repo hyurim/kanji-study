@@ -65,10 +65,13 @@ CREATE TABLE users (
     login_id VARCHAR(50), 							-- 로그인용 아이디
     password VARCHAR(255), 							-- 비밀번호
     nickname VARCHAR(50), 							-- 닉네임
-    streak_days INT, 								-- 연속으로 로그인한 날짜
+    streak_days INT DEFAULT 0, 						-- 연속으로 로그인한 날짜
     role VARCHAR(20), 								-- 유저 구분 (ADMIN은 직접 추가)
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP 	-- 생성 날짜
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, -- 생성 날짜
+    last_login_at TIMESTAMP							-- 마지막 로그인 날짜
 );
+
+
 -- 유저가 저장한 한자 
 CREATE TABLE user_saved_kanji (
     id BIGSERIAL PRIMARY KEY,

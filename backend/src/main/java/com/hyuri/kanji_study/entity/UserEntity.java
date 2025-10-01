@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,10 +39,19 @@ public class UserEntity {
     @Column(name = "streak_days")
     private Integer streakDays;
 
-    @Column(name = "role", length = 20)   // ADMIN은 수동 추가 정책
+    @Column(name = "role", length = 20)   // ADMIN은 수동으로 만들 예정
     private String role;
 
     // DB DEFAULT CURRENT_TIMESTAMP 사용
-    @Column(name = "created_at", insertable = false, updatable = false)
+    @Column(name = "created_at", insertable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime createdAt;
+
+    @Column(name = "last_login_at")
+    private LocalDateTime lastLoginAt;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.role == null || this.role.isBlank()) this.role = "USER";
+        if (this.streakDays == null) this.streakDays = 0;
+    }
 }

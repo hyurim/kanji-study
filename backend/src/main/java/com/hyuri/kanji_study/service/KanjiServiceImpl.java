@@ -5,20 +5,23 @@ import com.hyuri.kanji_study.dto.KunSentenceDto;
 import com.hyuri.kanji_study.dto.KunyomiDto;
 import com.hyuri.kanji_study.dto.OnSentenceDto;
 import com.hyuri.kanji_study.dto.OnyomiDto;
+import com.hyuri.kanji_study.dto.SaveDto;
 import com.hyuri.kanji_study.dto.UserDto;
 import com.hyuri.kanji_study.entity.KanjiEntity;
 import com.hyuri.kanji_study.entity.KunSentenceEntity;
 import com.hyuri.kanji_study.entity.KunyomiEntity;
 import com.hyuri.kanji_study.entity.OnSentenceEntity;
 import com.hyuri.kanji_study.entity.OnyomiEntity;
+import com.hyuri.kanji_study.entity.SaveEntity;
 import com.hyuri.kanji_study.entity.UserEntity;
 import com.hyuri.kanji_study.repository.KanjiRepository;
 import com.hyuri.kanji_study.repository.KunSentenceRepository;
 import com.hyuri.kanji_study.repository.KunyomiRepository;
 import com.hyuri.kanji_study.repository.OnSentenceRepository;
 import com.hyuri.kanji_study.repository.OnyomiRepository;
+import com.hyuri.kanji_study.repository.SaveRepository;
 import com.hyuri.kanji_study.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Sort;
@@ -42,6 +45,7 @@ public class KanjiServiceImpl implements KanjiService {
     private final OnyomiRepository onRepo;
     private final OnSentenceRepository onSentRepo;
     private final UserRepository userRepo;
+    private final SaveRepository saveRepo;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -233,6 +237,7 @@ public class KanjiServiceImpl implements KanjiService {
         return !userRepo.existsByLoginId(searchId);
     }
 
+
     @Override
     public UserDto join(UserDto user) {
 
@@ -296,4 +301,53 @@ public class KanjiServiceImpl implements KanjiService {
         userRepo.save(user);
     }
     // save
+
+    private UserEntity getUserOrThrow(String loginId) {
+        return userRepo.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException("유저가 존재하지 않습니다: " + loginId));
+    }
+
+    private KanjiEntity getKanjiOrThrow(Long kanjiId) {
+        return kanjiRepo.findById(kanjiId)
+                .orElseThrow(() -> new IllegalArgumentException("한자가 존재하지 않습니다: " + kanjiId));
+    }
+
+    @Transactional
+    public SaveDto addSave(String loginId, Long kanjiId) {
+        UserEntity user = getUserOrThrow(loginId);
+        KanjiEntity kanji = getKanjiOrThrow(kanjiId);
+
+        if (saveRepo.existsByUserAndKanji(user, kanji)) {
+            // 이미 저장되어 있으면 그대로 반환 (id는 기존 값 사용)
+            SaveEntity exist = saveRepo.findByUser(user).stream()
+                    .filter(se -> se.getKanji().getId().equals(kanjiId))
+                    .findFirst().orElseThrow();
+            return new SaveDto(exist.getId(), user.getUserId(), kanji.getId());
+        }
+
+        SaveEntity saved = saveRepo.save(
+                SaveEntity.builder().user(user).kanji(kanji).build()
+        );
+        return new SaveDto(saved.getId(), user.getUserId(), kanji.getId());
+    }
+
+
+    @Transactional(readOnly = true)
+    public List<SaveDto> getSaveList(String loginId) {
+        UserEntity user = getUserOrThrow(loginId);
+        return saveRepo.findByUser(user).stream()
+                .map(se -> new SaveDto(se.getId(), user.getUserId(), se.getKanji().getId()))
+                .toList();
+    }
+
+    @Transactional
+    public void removeSave(String loginId, Long kanjiId) {
+        UserEntity user = getUserOrThrow(loginId);
+        KanjiEntity kanji = getKanjiOrThrow(kanjiId);
+        if (saveRepo.deleteByUserAndKanji(user, kanji) == 0) {
+            throw new IllegalArgumentException("저장 목록에 없는 한자입니다: " + kanjiId);
+        }
+    }
+
+
 }

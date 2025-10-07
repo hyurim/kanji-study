@@ -40,11 +40,6 @@ public class AuthApi {
         try {
             // 암호화된 비밀번호와 입력된 비밀번호 비교
             log.info("exists : {}", userRepository.existsByLoginId(authRequest.loginId()));
-            boolean exists = userRepository.existsByLoginId(authRequest.loginId());
-
-            if (!exists) {
-                throw new UsernameNotFoundException("아이디 또는 비밀번호가 일치하지 않습니다!");
-            }
 
             // 아이디, 비밀번호 맞는지 확인 (틀리면 예외, 맞으면 반환)
             Authentication authentication = authenticationManager.authenticate(

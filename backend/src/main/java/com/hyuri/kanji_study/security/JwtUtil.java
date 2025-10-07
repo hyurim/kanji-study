@@ -46,6 +46,7 @@ public class JwtUtil {
         claims.computeIfAbsent("role", k -> "user");
 
         return Jwts.builder()
+                .setHeaderParam("type", "JWT")
                 .setSubject(loginId)
                 .addClaims(claims)
                 .setIssuedAt(now)

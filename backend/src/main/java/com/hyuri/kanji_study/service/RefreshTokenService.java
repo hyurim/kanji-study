@@ -13,7 +13,11 @@ public class RefreshTokenService {
     private final StringRedisTemplate redisTemplate;
 
     public void save(String userId, String refreshToken, long expirationMillis) {
-        redisTemplate.opsForValue().set(userId, refreshToken, expirationMillis, TimeUnit.MILLISECONDS);
+        redisTemplate.opsForValue().set(
+                userId,
+                refreshToken,
+                expirationMillis,
+                TimeUnit.MILLISECONDS);
     }
 
     public String get(String userId) {

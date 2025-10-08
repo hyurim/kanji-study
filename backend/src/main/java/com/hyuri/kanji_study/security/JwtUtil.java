@@ -99,8 +99,12 @@ public class JwtUtil {
     }
 
     public String extractUsername(String jwt) {
-        return Jwts.parserBuilder().setSigningKey(key).build()
-                .parseClaimsJws(jwt).getBody().getSubject();
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(jwt)
+                .getBody()
+                .getSubject();
     }
 
     public long getRefreshExpirationMs() {

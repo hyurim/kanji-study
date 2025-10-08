@@ -16,10 +16,12 @@ public class JwtUtil {
 
     private final Key key;
     private final long expirationMillis;
+    private final long refreshExpirationMillis;
 
     public JwtUtil(
             @Value("${jwt.secret}") String secret,
             @Value("${jwt.expiration-ms}") long expirationMillis,
+            @Value("${jwt.refresh-expiration-ms}") long refreshExpirationMillis,
             @Value("${jwt.secret.is-base64:false}") boolean isBase64
     ) {
         byte[] keyBytes = isBase64
@@ -27,6 +29,7 @@ public class JwtUtil {
                 : secret.getBytes(StandardCharsets.UTF_8);             // B) 평문 시크릿(32바이트 이상 권장)
         this.key = Keys.hmacShaKeyFor(keyBytes);                       // HS256/384/512 자동결정
         this.expirationMillis = expirationMillis;
+        this.refreshExpirationMillis = refreshExpirationMillis;
     }
 
     /** 토큰 생성 */
@@ -81,5 +84,26 @@ public class JwtUtil {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    // Refresh Token
+    public String generateRefreshToken(String loginId) {
+        Date now = new Date();
+        Date exp = new Date(now.getTime() + refreshExpirationMillis); // 7일
+        return Jwts.builder()
+                .setSubject(loginId)
+                .setIssuedAt(now)
+                .setExpiration(exp)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String extractUsername(String jwt) {
+        return Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(jwt).getBody().getSubject();
+    }
+
+    public long getRefreshExpirationMs() {
+        return refreshExpirationMillis; // 생성자에서 주입 및 설정한 값 사용
     }
 }

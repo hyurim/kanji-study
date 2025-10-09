@@ -119,7 +119,12 @@ public class AuthApi {
         }
         // 쿠키 제거
         ResponseCookie expired = ResponseCookie.from("refreshToken", "")
-                .httpOnly(true).secure(true).path("/").sameSite("None").maxAge(0).build();
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("None")
+                .maxAge(0)
+                .build();
         response.addHeader(HttpHeaders.SET_COOKIE, expired.toString());
 
         return ResponseEntity.ok("Logged out");

@@ -1,39 +1,55 @@
 import { Routes, Route, NavLink } from "react-router-dom";
+import { useAuth } from "./auth/useAuth";
 import Home from "./pages/Home";
 import Studylist from "./pages/StudyList";
-import Savelist from "./pages/SaveList";
+import Savelist from "./pages/myPage/SaveList";
 import Study from "./pages/Study";
 import PageTest from "./pages/PageTest";
+import Login from "./pages/User/Login";
+import Signup from "./pages/User/Signup";
+import Logout from "./pages/User/Logout";
 
 const App = () => {
+  const { user } = useAuth();
+
   return (
     <div style={{ maxWidth: 640, margin: "0 auto", padding: 16 }}>
       <header style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 16 }}>
         <h1 style={{ fontSize: 22, marginRight: "auto" }}>Kanji Study</h1>
-        <NavLink to="/" end style={linkStyle}>
-          홈
-        </NavLink>
-        <NavLink to="/studylist" style={linkStyle}>
-          학습
-        </NavLink>
-        <NavLink to="/savelist" style={linkStyle}>
-          저장함(미구현)
-        </NavLink>
-		<NavLink to="/study" style={linkStyle}>
-          테스트
-        </NavLink>
-		<NavLink to="/pagetest" style={linkStyle}>
-          단어 문장 테스트
-        </NavLink>
+
+        <NavLink to="/" end style={linkStyle}>홈</NavLink>
+        <NavLink to="/studylist" style={linkStyle}>학습</NavLink>
+        <NavLink to="/savelist" style={linkStyle}>저장함(미구현)</NavLink>
+        <NavLink to="/study" style={linkStyle}>테스트</NavLink>
+        <NavLink to="/pagetest" style={linkStyle}>단어 문장 테스트</NavLink>
+
+        {!user ? (
+          <>
+            <NavLink to="/login" style={linkStyle}>로그인</NavLink>
+            <NavLink to="/signup" style={linkStyle}>회원가입</NavLink>
+          </>
+        ) : (
+          <>
+            <span style={{ fontSize: 12, color: "#666" }}>
+              {user?.name || user?.loginId} 님
+            </span>
+            <NavLink to="/logout" style={linkStyle}>로그아웃</NavLink>
+          </>
+        )}
       </header>
 
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/studylist" element={<Studylist />} />
         <Route path="/savelist" element={<Savelist />} />
+        <Route path="/study" element={<Study />} />
+        <Route path="/pagetest" element={<PageTest />} />
+
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/logout" element={<Logout />} />
+
         <Route path="*" element={<NotFound />} />
-		<Route path="/study" element={<Study />} />
-		<Route path="/pagetest" element={<PageTest />} />
       </Routes>
 
       <footer style={{ marginTop: 24, fontSize: 12, color: "#666" }}>
@@ -41,19 +57,17 @@ const App = () => {
       </footer>
     </div>
   );
-}
+};
 
 export default App;
 
 const linkStyle = ({ isActive }) => ({
-	padding: "6px 10px",
-	borderRadius: 8,
-	textDecoration: "none",
-	border: "1px solid #ddd",
-	color: isActive ? "white" : "#333",
-	background: isActive ? "#004488" : "transparent",
-  });
-  
-const NotFound = () => {
-	return <div>페이지를 찾을 수 없습니다.</div>;
-  } 
+  padding: "6px 10px",
+  borderRadius: 8,
+  textDecoration: "none",
+  border: "1px solid #ddd",
+  color: isActive ? "white" : "#333",
+  background: isActive ? "#004488" : "transparent",
+});
+
+const NotFound = () => <div>페이지를 찾을 수 없습니다.</div>;

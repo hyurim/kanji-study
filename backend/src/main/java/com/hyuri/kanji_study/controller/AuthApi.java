@@ -65,14 +65,20 @@ public class AuthApi {
             refreshTokenService.save(authRequest.loginId(), refreshToken, jwtUtil.getRefreshExpirationMs());
 
             // HttpOnly 쿠키로 refresh 토큰 전달
-            ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
+            boolean isProd = false;
+
+            ResponseCookie.ResponseCookieBuilder builder = ResponseCookie.from("refreshToken", refreshToken)
                     .httpOnly(true)
-                    .secure(true)
                     .path("/")
-                    .sameSite("None")
-                    .maxAge(Duration.ofMillis(jwtUtil.getRefreshExpirationMs()))
-                    .build();
-            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+                    .maxAge(Duration.ofMillis(jwtUtil.getRefreshExpirationMs()));
+
+            if (isProd) {
+                builder.sameSite("None").secure(true);   // HTTPS 환경 (운영)
+            } else {
+                builder.sameSite("Lax").secure(false);   // HTTP 환경 (로컬)
+            }
+
+            response.addHeader(HttpHeaders.SET_COOKIE, builder.build().toString());
             // JWT 반환
             return ResponseEntity.ok(new AuthResponse(accessToken));
         } catch (BadCredentialsException e) {

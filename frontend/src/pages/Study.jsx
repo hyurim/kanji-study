@@ -5,7 +5,7 @@ import {
   fetchOnyomiList,
   fetchKunSentenceList,
   fetchOnSentenceList,
-} from "../lib/api";
+} from "../services/kanji";
 
 const Study = () => {
   const [list, setList] = useState([]);

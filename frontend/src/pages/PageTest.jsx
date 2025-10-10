@@ -4,7 +4,7 @@ import {
   fetchKunSentenceList, 
   fetchOnyomiList, 
   fetchOnSentenceList  
-} from "../lib/api";
+} from "../services/kanji";
 
 const PageTest = () => {
   const [kunyomi, setKunyomi] = useState([]);

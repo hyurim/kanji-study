@@ -15,6 +15,9 @@ public class CorsConfig implements WebMvcConfigurer {
                         "https://hyurim.github.io"          // 사용자 페이지
                 )
                 .allowedMethods("GET","POST","PUT","DELETE","OPTIONS")
-                .allowCredentials(true);
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
+
     }
 }

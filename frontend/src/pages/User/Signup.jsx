@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -72,22 +73,14 @@ const Button = styled.button`
 
 const Signup = () => {
   const [form, setForm] = useState({
-    userId: "",
+    loginId: "",
     password: "",
     confirmPassword: "",
-    address: "",
-    name: "",
-    birthday: "",
-    gender: "",
-    phoneNumber: "",
-    email: "",
-    emailDomain: "",
-    mbti: "",
-    verificationCode: "", // 추가된 필드
+    nickname: "",
   });
 
   const [error, setError] = useState("");
-  const [verificationStatus, setVerificationStatus] = useState(false); // 인증 상태
+  const navigate = useNavigate();
 
   // 입력값 변경 핸들러
   const handleChange = (e) => {
@@ -107,27 +100,17 @@ const Signup = () => {
       return;
     }
 
-    if (!verificationStatus) {
-      setError("이메일 인증을 완료해주세요.");
-      return;
-    }
-
-    const fullEmail = `${form.email}@${form.emailDomain}`;
     const signupData = {
-      userId: form.userId,
+      loginId: form.loginId,
       password: form.password,
-      name: form.name,
-      birthday: form.birthday,
-      gender: form.gender,
-      phoneNumber: form.phoneNumber,
-      email: fullEmail,
-      verificationCode: form.verificationCode,
+      nickname: form.nickname,
     };
 
     console.log("폼 제출 데이터:", signupData);
 
     try {
-      const response = await fetch("/web/signup", {
+		  const API_BASE = import.meta.env.VITE_API_BASE || '';
+      const response = await fetch(`${API_BASE}/api/user/signup`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -138,18 +121,12 @@ const Signup = () => {
       if (response.ok) {
         console.log("회원가입 성공");
         setForm({
-          userId: "",
+          loginId: "",
           password: "",
           confirmPassword: "",
-          name: "",
-          birthday: "",
-          gender: "",
-          phoneNumber: "",
-          email: "",
-          emailDomain: "",
-          verificationCode: "", // 폼 초기화
+          nickname: "",
         });
-        window.location.href = "/";
+        navigate("/", { replace: true });
       } else {
         console.error("회원가입 실패");
       }
@@ -166,8 +143,8 @@ const Signup = () => {
           <LabelText>아이디</LabelText>
           <Input
             type="text"
-            name="userId"
-            value={form.userId}
+            name="loginId"
+            value={form.loginId}
             onChange={handleChange}
             required
           />
@@ -199,8 +176,8 @@ const Signup = () => {
           <LabelText>이름</LabelText>
           <Input
             type="text"
-            name="name"
-            value={form.name}
+            name="nickname"
+            value={form.nickname}
             onChange={handleChange}
           />
         </Label>

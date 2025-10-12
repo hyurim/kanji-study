@@ -71,12 +71,34 @@ CREATE TABLE users (
     last_login_at TIMESTAMP							-- 마지막 로그인 날짜
 );
 
+---------------------------------
+
+-- JLPT 단어
+CREATE TABLE jlpt_vocab (
+    voca_id            BIGSERIAL PRIMARY KEY,    -- 고유 ID
+    word          TEXT NOT NULL,            -- 단어 (예: 勉強)
+    reading       TEXT,                     -- 읽기 (예: べんきょう)
+    meaning_kr    TEXT,                     -- 한국어 뜻 (예: 공부)
+    jlpt_level    VARCHAR(5) NOT NULL,      -- N1~N5
+    part_of_speech VARCHAR(50),             -- 품사 (명사, 동사 등)
+    example_jp    TEXT,                     -- 예문 (일본어)
+    example_kr    TEXT                     -- 예문 번역
+);
+
+--------------------------------
+
 
 -- 유저가 저장한 한자 
 CREATE TABLE user_saved_kanji (
     id BIGSERIAL PRIMARY KEY,
-    user_id BIGINT REFERENCES users(user_id),
-    kanji_id BIGINT REFERENCES kanji(id)
+    user_id BIGINT REFERENCES users(user_id) ON DELETE CASCADE,
+    kanji_id BIGINT REFERENCES kanji(id) ON DELETE CASCADE
+);
+
+CREATE TABLE user_saved_vocab (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT REFERENCES users(user_id) ON DELETE CASCADE,
+    vocab_id BIGINT  REFERENCES jlpt_vocab(voca_id) ON DELETE CASCADE
 );
 
  DROP TABLE users;

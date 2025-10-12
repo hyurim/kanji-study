@@ -1,6 +1,6 @@
 package com.hyuri.kanji_study.controller;
 
-import com.hyuri.kanji_study.dto.SaveDto;
+import com.hyuri.kanji_study.dto.SaveKanjiDto;
 import com.hyuri.kanji_study.security.AuthenticatedUser;
 import com.hyuri.kanji_study.service.KanjiService;
 import lombok.RequiredArgsConstructor;
@@ -21,28 +21,28 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/api/save")
-public class SaveController {
+public class SaveKanjiController {
 
     private final KanjiService kanjiService;
 
     // 저장(중복 저장시 그대로 기존값 반환)
     @PostMapping("/{kanjiId}")
-    public ResponseEntity<SaveDto> saveKanji(@PathVariable Long kanjiId,
-                                             @AuthenticationPrincipal AuthenticatedUser user) {
-        SaveDto dto = kanjiService.addSave(user.getUsername(), kanjiId);
+    public ResponseEntity<SaveKanjiDto> saveKanji(@PathVariable Long kanjiId,
+                                                  @AuthenticationPrincipal AuthenticatedUser user) {
+        SaveKanjiDto dto = kanjiService.addKanjiSave(user.getUsername(), kanjiId);
         return ResponseEntity.created(URI.create("/api/saves/" + dto.getId())).body(dto);
     }
     // 내 저장 목록 조회
     @GetMapping
-    public ResponseEntity<List<SaveDto>> list(@AuthenticationPrincipal AuthenticatedUser user) {
-        return ResponseEntity.ok(kanjiService.getSaveList(user.getUsername()));
+    public ResponseEntity<List<SaveKanjiDto>> list(@AuthenticationPrincipal AuthenticatedUser user) {
+        return ResponseEntity.ok(kanjiService.getSaveKanjiList(user.getUsername()));
     }
 
     // 저장 취소
     @DeleteMapping("/{kanjiId}")
     public ResponseEntity<Void> remove(@PathVariable Long kanjiId,
                                        @AuthenticationPrincipal AuthenticatedUser user) {
-        kanjiService.removeSave(user.getUsername(), kanjiId);
+        kanjiService.removeKanjiSave(user.getUsername(), kanjiId);
         return ResponseEntity.noContent().build();
     }
 }

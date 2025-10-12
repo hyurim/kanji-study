@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaveDto {
+public class SaveKanjiDto {
     private Long id;
     private Long userId;
     private Long kanjiId;

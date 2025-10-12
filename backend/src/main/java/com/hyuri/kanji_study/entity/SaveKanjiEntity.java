@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_saved_kanji")
-public class SaveEntity {
+public class SaveKanjiEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +27,13 @@ public class SaveEntity {
 
     // FK: users.user_id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    // FK: kanji.id  (이미 존재하는 KanjiEntity 사용)
+    // FK: kanji.id
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "kanji_id", nullable = false)
+    @JoinColumn(name = "kanji_id")
     private KanjiEntity kanji;
+
+
 }

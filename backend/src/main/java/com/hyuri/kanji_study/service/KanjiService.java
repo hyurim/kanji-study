@@ -7,6 +7,7 @@ import com.hyuri.kanji_study.dto.OnSentenceDto;
 import com.hyuri.kanji_study.dto.OnyomiDto;
 import com.hyuri.kanji_study.dto.SaveKanjiDto;
 import com.hyuri.kanji_study.dto.UserDto;
+import com.hyuri.kanji_study.dto.SaveVocabDto;
 
 import java.util.List;
 
@@ -41,4 +42,8 @@ public interface KanjiService {
     List<SaveKanjiDto> getSaveKanjiList(String loginId);
     void removeKanjiSave(String loginId, Long kanjiId);
 
+    //saveVocab
+    SaveVocabDto saveVocab(String loginId, Long vocabId);
+    List<SaveVocabDto> getSaveVocabList(String loginId);
+    void removeVocabSave(String loginId, Long vocabId);
 }

@@ -8,6 +8,7 @@ import com.hyuri.kanji_study.dto.OnyomiDto;
 import com.hyuri.kanji_study.dto.SaveKanjiDto;
 import com.hyuri.kanji_study.dto.SaveVocabDto;
 import com.hyuri.kanji_study.dto.UserDto;
+import com.hyuri.kanji_study.entity.JlptVocabEntity;
 import com.hyuri.kanji_study.entity.KanjiEntity;
 import com.hyuri.kanji_study.entity.KunSentenceEntity;
 import com.hyuri.kanji_study.entity.KunyomiEntity;
@@ -16,6 +17,7 @@ import com.hyuri.kanji_study.entity.OnyomiEntity;
 import com.hyuri.kanji_study.entity.SaveKanjiEntity;
 import com.hyuri.kanji_study.entity.SaveVocabEntity;
 import com.hyuri.kanji_study.entity.UserEntity;
+import com.hyuri.kanji_study.repository.JlptRepository;
 import com.hyuri.kanji_study.repository.KanjiRepository;
 import com.hyuri.kanji_study.repository.KunSentenceRepository;
 import com.hyuri.kanji_study.repository.KunyomiRepository;
@@ -359,5 +361,50 @@ public class KanjiServiceImpl implements KanjiService {
         }
     }
 
+    // savaVocab
+    private JlptVocabEntity gettangoOrThrow(Long vocabId) {
+        return jlptRepo.findById(vocabId)
+                .orElseThrow(() -> new IllegalArgumentException("단어가 존재하지 않습니다: " + vocabId));
+    }
+    @Transactional
+    public SaveVocabDto saveVocab(String loginId, Long vocabId) {
+        UserEntity user = userRepo.findByLoginId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다: " + loginId));
 
+        JlptVocabEntity vocab = gettangoOrThrow(vocabId);
+
+
+        if (saveVocabRepo.existsByUserAndVocab(user, vocab))
+            throw new IllegalStateException("이미 저장된 단어입니다.");
+
+        SaveVocabEntity saved = saveVocabRepo.save(
+                SaveVocabEntity.builder()
+                        .user(user)
+                        .vocab(vocab)
+                        .build()
+        );
+
+        return new SaveVocabDto(saved.getId(), user.getUserId(), vocab.getVocaId());
+    }
+
+    @Transactional(readOnly = true)
+    public List<SaveVocabDto> getSaveVocabList(String loginId) {
+        UserEntity user = getUserOrThrow(loginId);
+        return saveVocabRepo.findByUser(user).stream()
+                .map(se -> new SaveVocabDto(
+                        se.getId(),
+                        user.getUserId(),
+                        se.getVocab().getVocaId()
+                ))
+                .toList();
+    }
+
+    @Transactional
+    public void removeVocabSave(String loginId, Long vocabId) {
+        UserEntity user = getUserOrThrow(loginId);
+        JlptVocabEntity vocab = gettangoOrThrow(vocabId);
+        if (saveVocabRepo.deleteByUserAndVocab(user, vocab) == 0) {
+            throw new IllegalArgumentException("저장 목록에 없는 단어입니다: " + vocabId);
+        }
+    }
 }

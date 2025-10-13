@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useAuth } from "../../auth/AuthProvider"
 
 const Container = styled.div`
   display: flex;
@@ -89,49 +91,65 @@ const Separator = styled.span`
   margin: 0 10px;
 `;
 
+const ErrorMsg = styled.p`
+  color: #d33;
+  text-align: center;
+  margin: 0;
+`;
+
 const Login = () => {
-  const [userId, setUserId] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const next = new URLSearchParams(location.search).get("next") || "/";
+
+  const [loginId, setLoginId] = useState("");
   const [password, setPassword] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleLogin = async (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-
-    const loginData = { userId, password };
+    if (!loginId || !password) {
+      setError("아이디와 비밀번호를 입력해주세요.");
+      return;
+    }
+    setSubmitting(true);
+    setError("");
 
     try {
-      const response = await fetch("/web/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(loginData),
-        credentials: "include",
+      await login(loginId, password);
+      navigate(next, { replace: true });
+    } catch (err) {
+      console.log("[LOGIN ERROR]", {
+        status: err?.response?.status,
+        data: err?.response?.data,
       });
-
-      if (response.ok) {
-        const data = await response.json();
-        const token = data.access_token;
-        localStorage.setItem("token", token);
-        console.log("로그인 성공, JWT:", token);
-        window.location.href = "/"; 
-      } else {
-        console.error("로그인 실패");
-      }
-    } catch (error) {
-      console.error("서버 오류 발생", error);
+      const msg =
+        err?.response?.data ||
+        err?.message ||
+        "로그인에 실패했습니다. 아이디/비밀번호를 확인해주세요.";
+      setError(typeof msg === "string" ? msg : "로그인 실패");
+    } finally {
+      setSubmitting(false);
     }
   };
 
+
   return (
     <Container>
-      <LoginForm onSubmit={handleLogin}>
+      <LoginForm onSubmit={onSubmit}>
         <InputBox>
           <Label>아이디</Label>
           <Divider>|</Divider>
           <Input
             type="text"
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
+            name="username"
+            value={loginId}
+            onChange={(e) => setLoginId(e.target.value)}
             placeholder="아이디 입력"
             autoComplete="username"
+            disabled={submitting}
           />
         </InputBox>
 
@@ -140,20 +158,26 @@ const Login = () => {
           <Divider>|</Divider>
           <Input
             type="password"
+            name="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="비밀번호 입력"
             autoComplete="current-password"
+            disabled={submitting}
           />
         </InputBox>
 
-        <LoginButton type="submit">로그인</LoginButton>
+        <LoginButton type="submit" disabled={submitting}>
+          {submitting ? "로그인 중..." : "로그인"}
+        </LoginButton>
+
+        {error && <ErrorMsg>{error}</ErrorMsg>}
       </LoginForm>
 
       <Links>
         <StyledLink href="./FindID">아이디/비밀번호 찾기</StyledLink>
         <Separator> | </Separator>
-        <StyledLink href="/signUp">회원가입</StyledLink>
+        <StyledLink href="/kanji-study/signUp">회원가입</StyledLink>
       </Links>
     </Container>
   );

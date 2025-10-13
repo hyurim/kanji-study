@@ -7,7 +7,7 @@ export default function Logout(){
   const nav = useNavigate();
   useEffect(() => {
     (async () => {
-      await logout();
+		await logout({ skipAuthRefresh: true });
       nav("/", { replace: true });
     })();
   }, []);

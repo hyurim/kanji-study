@@ -2,6 +2,7 @@ package com.hyuri.kanji_study.controller;
 
 import com.hyuri.kanji_study.dto.AuthenticationDto.AuthRequest;
 import com.hyuri.kanji_study.dto.AuthenticationDto.AuthResponse;
+import com.hyuri.kanji_study.dto.UserDto;
 import com.hyuri.kanji_study.repository.UserRepository;
 import com.hyuri.kanji_study.security.JwtUtil;
 import com.hyuri.kanji_study.service.RefreshTokenService;
@@ -20,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -136,4 +138,27 @@ public class AuthApi {
         return ResponseEntity.ok("Logged out");
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<?> me(Authentication auth) {
+        if (auth == null || !auth.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+
+        String loginId = auth.getName();
+
+        var user = userRepository.findByLoginId(loginId)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+
+        // Entity → DTO 변환
+        UserDto dto = new UserDto();
+        dto.setUserId(user.getUserId());
+        dto.setLoginId(user.getLoginId());
+        dto.setNickname(user.getNickname());
+        dto.setPassword(null);
+        dto.setRole(user.getRole());
+        dto.setCreatedAt(user.getCreatedAt());
+        dto.setLastLoginAt(user.getLastLoginAt());
+
+        return ResponseEntity.ok(dto);
+    }
 }

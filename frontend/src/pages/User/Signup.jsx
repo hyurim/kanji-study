@@ -120,12 +120,6 @@ const Signup = () => {
 
       if (response.ok) {
         console.log("회원가입 성공");
-        setForm({
-          loginId: "",
-          password: "",
-          confirmPassword: "",
-          nickname: "",
-        });
         navigate("/", { replace: true });
       } else {
         console.error("회원가입 실패");

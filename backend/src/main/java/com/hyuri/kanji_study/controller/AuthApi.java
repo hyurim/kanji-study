@@ -67,7 +67,8 @@ public class AuthApi {
             refreshTokenService.save(authRequest.loginId(), refreshToken, jwtUtil.getRefreshExpirationMs());
 
             // HttpOnly 쿠키로 refresh 토큰 전달
-            boolean isProd = false; // 배포시 true 변경
+//            boolean isProd = false; // 배포시 true 변경
+            boolean isProd = true;
 
             ResponseCookie.ResponseCookieBuilder builder = ResponseCookie.from("refreshToken", refreshToken)
                     .httpOnly(true)
@@ -126,7 +127,8 @@ public class AuthApi {
             } catch (Exception ignore) {}
         }
 
-        boolean isProd = false; // 배포 시 true로 변경
+//        boolean isProd = false; // 배포 시 true로 변경
+        boolean isProd = true;
         // 쿠키 제거
         ResponseCookie.ResponseCookieBuilder expired = ResponseCookie.from("refreshToken", "")
                 .httpOnly(true)

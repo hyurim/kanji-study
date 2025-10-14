@@ -3,7 +3,8 @@ import {
   fetchKunyomiList, 
   fetchKunSentenceList, 
   fetchOnyomiList, 
-  fetchOnSentenceList  
+  fetchOnSentenceList,
+  fetchVocabList,
 } from "../services/kanji";
 
 const PageTest = () => {
@@ -11,6 +12,7 @@ const PageTest = () => {
   const [kunSent, setKunSent] = useState([]);
   const [onyomi, setOnyomi] = useState([]);
   const [onSent, setOnSent] = useState([]);
+  const [vocab, setVocab] = useState([]);
   const [err, setErr] = useState(null);
 
   useEffect(() => {
@@ -72,6 +74,16 @@ const PageTest = () => {
           {onSent.map((s) => (
             <li key={s.id}>
               {s.onJpText} → {s.onKrText}
+            </li>
+          ))}
+        </ul>
+      </section>
+	  <section>
+        <h3>JLPT 단어</h3>
+        <ul>
+          {vocab.map(v => (
+            <li key={v.id}>
+              {v.word} ({v.reading}) - {v.meaning} [{v.level}]
             </li>
           ))}
         </ul>

@@ -1,5 +1,6 @@
 package com.hyuri.kanji_study.service;
 
+import com.hyuri.kanji_study.dto.JlptVocabDto;
 import com.hyuri.kanji_study.dto.KanjiDto;
 import com.hyuri.kanji_study.dto.KunSentenceDto;
 import com.hyuri.kanji_study.dto.KunyomiDto;
@@ -46,4 +47,7 @@ public interface KanjiService {
     SaveVocabDto saveVocab(String loginId, Long vocabId);
     List<SaveVocabDto> getSaveVocabList(String loginId);
     void removeVocabSave(String loginId, Long vocabId);
+
+    //Voca
+    List<JlptVocabDto> getAll();
 }

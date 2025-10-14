@@ -1,5 +1,6 @@
 package com.hyuri.kanji_study.service;
 
+import com.hyuri.kanji_study.dto.JlptVocabDto;
 import com.hyuri.kanji_study.dto.KanjiDto;
 import com.hyuri.kanji_study.dto.KunSentenceDto;
 import com.hyuri.kanji_study.dto.KunyomiDto;
@@ -406,5 +407,27 @@ public class KanjiServiceImpl implements KanjiService {
         if (saveVocabRepo.deleteByUserAndVocab(user, vocab) == 0) {
             throw new IllegalArgumentException("저장 목록에 없는 단어입니다: " + vocabId);
         }
+    }
+
+    // voca
+
+    @Override
+    public List<JlptVocabDto> getAll() {
+        return jlptRepo.findAll().stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    private JlptVocabDto toDto(JlptVocabEntity e) {
+        JlptVocabDto dto = new JlptVocabDto();
+        dto.setVocaId(e.getVocaId());
+        dto.setWord(e.getWord());
+        dto.setReading(e.getReading());
+        dto.setMeaningKr(e.getMeaningKr());
+        dto.setJlptLevel(e.getJlptLevel());
+        dto.setPartOfSpeech(e.getPartOfSpeech());
+        dto.setExampleJp(e.getExampleJp());
+        dto.setExampleKr(e.getExampleKr());
+        return dto;
     }
 }

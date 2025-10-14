@@ -82,14 +82,14 @@ export function AuthProvider({ children }){
   }, [accessToken, fetchMe, attemptedInitialRefresh, suppressAutoRefresh]);
 
   const login = useCallback(async (loginId, password) => {
-    const { data } = await api.post("/api/auth/login", { loginId, password }, { withCredentials: true });
+    const { data } = await api.post("/auth/login", { loginId, password }, { withCredentials: true });
     const token = data?.access_token || data?.accessToken || data?.token;
     if (!token) throw new Error("No access token returned");
 
     setAccessToken(token);
     localStorage.setItem("everLoggedIn", "1");
 
-    const { data: me } = await api.get("/api/auth/me", {
+    const { data: me } = await api.get("/auth/me", {
       headers: { Authorization: `Bearer ${token}` },
       withCredentials: true,
     });

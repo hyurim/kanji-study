@@ -45,12 +45,7 @@ public class AuthApi {
     public ResponseEntity<?> login(@RequestBody @Valid AuthRequest authRequest,
                                    HttpServletResponse response
     ) {
-        log.info("토큰 : {}", authRequest);
-
         try {
-            // 암호화된 비밀번호와 입력된 비밀번호 비교
-            log.info("exists : {}", userRepository.existsByLoginId(authRequest.loginId()));
-
             // 아이디, 비밀번호 맞는지 확인 (틀리면 예외, 맞으면 반환)
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.loginId(), authRequest.password())
@@ -58,9 +53,7 @@ public class AuthApi {
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String accessToken = jwtUtil.generateToken(authRequest.loginId());
-            log.debug("생성된 JWT 토큰: {}", accessToken);
             String refreshToken = jwtUtil.generateRefreshToken(authRequest.loginId());
-            log.debug("생성된 Refresh Token 토큰: {}", refreshToken);
             // JWT 생성
 
             // Refresh Token
@@ -84,7 +77,7 @@ public class AuthApi {
             response.addHeader(HttpHeaders.SET_COOKIE, builder.build().toString());
             // JWT 반환
             return ResponseEntity.ok(new AuthResponse(accessToken));
-        } catch (BadCredentialsException e) {
+        } catch (org.springframework.security.core.AuthenticationException e) {
             log.error("로그인 처리 중 오류", e);
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("아이디 또는 비밀번호가 일치하지 않습니다.");

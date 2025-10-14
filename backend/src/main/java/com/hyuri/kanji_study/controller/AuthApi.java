@@ -57,8 +57,14 @@ public class AuthApi {
             // JWT 생성
 
             // Refresh Token
-            refreshTokenService.save(authRequest.loginId(), refreshToken, jwtUtil.getRefreshExpirationMs());
-
+//            refreshTokenService.save(authRequest.loginId(), refreshToken, jwtUtil.getRefreshExpirationMs());
+            try {
+                refreshTokenService.save(authRequest.loginId(), refreshToken, jwtUtil.getRefreshExpirationMs());
+                log.info("refreshToken saved for {}", authRequest.loginId());
+            } catch (Exception saveEx) {
+                log.warn("Redis save failed for {}: {}",
+                        authRequest.loginId(), saveEx.toString());
+            }
             // HttpOnly 쿠키로 refresh 토큰 전달
 //            boolean isProd = false; // 배포시 true 변경
             boolean isProd = true;
@@ -78,14 +84,23 @@ public class AuthApi {
             // JWT 반환
             return ResponseEntity.ok(new AuthResponse(accessToken));
         } catch (org.springframework.security.core.AuthenticationException e) {
-            log.error("로그인 처리 중 오류", e);
+            log.info("로그인 실패(자격 증명 불일치) user={}", authRequest.loginId());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body("아이디 또는 비밀번호가 일치하지 않습니다.");
         } catch (Exception e) {
-            log.error("로그인 처리 중 오류", e);
+            log.error("로그인 처리 중 500 예외 user={} ex={}", authRequest.loginId(), e.toString(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("로그인 처리 중 오류가 발생했습니다.");
         }
+//        } catch (org.springframework.security.core.AuthenticationException e) {
+//            log.error("로그인 처리 중 오류", e);
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+//                    .body("아이디 또는 비밀번호가 일치하지 않습니다.");
+//        } catch (Exception e) {
+//            log.error("로그인 처리 중 오류", e);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("로그인 처리 중 오류가 발생했습니다.");
+//        }
     }
     /** Access 토큰 재발급 */
     @PostMapping("/token/refresh")

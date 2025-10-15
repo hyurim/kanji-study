@@ -84,6 +84,8 @@ VALUES
 (6, 6, '東京の人口は多いです。', '도쿄의 인구는 많습니다.');
 ---------------------------------
 
+SELECT * FROM JLPT_VOCAB;
+
 -- 단어
 INSERT INTO jlpt_vocab (word, reading, meaning_kr, jlpt_level, part_of_speech, example_jp, example_kr)
 VALUES

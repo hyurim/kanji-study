@@ -56,6 +56,7 @@ select * from kanji_onyomi;
 select * from kanji_kunyomi;
 select * from on_sentence;
 select * from kun_sentence;
+SELECT * FROM users;
 
 ---------------------------------
 
@@ -75,7 +76,7 @@ CREATE TABLE users (
 
 -- JLPT 단어
 CREATE TABLE jlpt_vocab (
-    voca_id            BIGSERIAL PRIMARY KEY,    -- 고유 ID
+    voca_id       BIGSERIAL PRIMARY KEY,    -- 고유 ID
     word          TEXT NOT NULL,            -- 단어 (예: 勉強)
     reading       TEXT,                     -- 읽기 (예: べんきょう)
     meaning_kr    TEXT,                     -- 한국어 뜻 (예: 공부)
@@ -103,3 +104,6 @@ CREATE TABLE user_saved_vocab (
 
  DROP TABLE users;
  DROP TABLE user_saved_kanji;
+ 
+ DROP TABLE jlpt_vocab;
+ DROP TABLE user_saved_vocab;

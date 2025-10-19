@@ -51,15 +51,6 @@ CREATE TABLE on_sentence (
 
 ---------------------------------
 
-select * from kanji;
-select * from kanji_onyomi;
-select * from kanji_kunyomi;
-select * from on_sentence;
-select * from kun_sentence;
-SELECT * FROM users;
-
----------------------------------
-
 -- 유저 테이블
 CREATE TABLE users (
     user_id BIGSERIAL PRIMARY KEY, 					-- 내부 식별용
@@ -88,7 +79,6 @@ CREATE TABLE jlpt_vocab (
 
 --------------------------------
 
-
 -- 유저가 저장한 한자 
 CREATE TABLE user_saved_kanji (
     id BIGSERIAL PRIMARY KEY,
@@ -96,11 +86,51 @@ CREATE TABLE user_saved_kanji (
     kanji_id BIGINT REFERENCES kanji(id) ON DELETE CASCADE
 );
 
+-- 유저가 저장한 단어
 CREATE TABLE user_saved_vocab (
     id BIGSERIAL PRIMARY KEY,
     user_id BIGINT REFERENCES users(user_id) ON DELETE CASCADE,
     vocab_id BIGINT  REFERENCES jlpt_vocab(voca_id) ON DELETE CASCADE
 );
+
+---------------------------------
+
+-- 채팅방 테이블
+CREATE TABLE chat_room (
+    id BIGSERIAL PRIMARY KEY,										-- 고유 ID
+    name VARCHAR(100) NOT NULL,          							-- 채팅방 이름
+    created_by BIGINT REFERENCES users(user_id) ON DELETE SET NULL,	-- 방을 만든 사용자
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP					-- 생성 날짜
+);
+
+-- 메시지 테이블
+CREATE TABLE chat_message (
+    id BIGSERIAL PRIMARY KEY,										-- 고유 ID
+    room_id BIGINT REFERENCES chat_room(id) ON DELETE CASCADE,  	-- 메시지가 속한 채팅방 ID
+    sender_id BIGINT REFERENCES users(user_id) ON DELETE SET NULL,  -- 보낸 유저
+    message TEXT NOT NULL,                                        	-- 메시지 내용
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP					-- 메시지 전송 시간
+);
+
+-- 참여자 테이블
+CREATE TABLE chat_participant (
+    room_id BIGINT REFERENCES chat_room(id) ON DELETE CASCADE,		-- 참여중인 방의 ID
+    user_id BIGINT REFERENCES users(user_id) ON DELETE CASCADE,		-- 참여자의 ID
+    joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,					-- 방에 참여한 시각
+    PRIMARY KEY (room_id, user_id)									-- 한 유저가 같은 방에 중복 X
+);
+
+
+---------------------------------
+---------------------------------
+
+select * from kanji;
+select * from kanji_onyomi;
+select * from kanji_kunyomi;
+select * from on_sentence;
+select * from kun_sentence;
+SELECT * FROM users;
+
 
  DROP TABLE users;
  DROP TABLE user_saved_kanji;

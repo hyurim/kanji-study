@@ -31,12 +31,13 @@ const App = () => {
         ) : (
           <>
             <span style={{ fontSize: 12, color: "#666" }}>
-              {user?.name || user?.loginId} 님
+              {user?.nickname} 님
             </span>
             <NavLink to="/logout" style={linkStyle}>로그아웃</NavLink>
           </>
         )}
       </header>
+	  {/* 추후 로그인 비로그인 나눌 예정 */}
 
       <Routes>
         <Route path="/" element={<Home />} />

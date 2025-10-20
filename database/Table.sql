@@ -3,10 +3,9 @@ CREATE TABLE kanji (
   glyph       TEXT NOT NULL UNIQUE,     -- 한자 (예: 学)
   kunyomi	  TEXT,						-- 훈독
   onyomi	  TEXT,						-- 음독
-  meaning     TEXT NOT NULL            	-- 뜻 
+  meaning     TEXT NOT NULL,            -- 뜻
+  reading VARCHAR(100) NOT NULL			-- 읽는 법 
 );
-ALTER TABLE kanji
-ADD COLUMN reading VARCHAR(100) NOT NULL;
 
 ---------------------------------
 -- 훈독 단어

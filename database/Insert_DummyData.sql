@@ -1,30 +1,15 @@
 -- 한자
-INSERT INTO kanji (glyph, kunyomi, onyomi, meaning) VALUES
-('学', 'まなぶ', 'がく, がっ', '배우다, 학문'),
-('火', 'ひ', 'か', '불'),
-('水', 'みず', 'すい', '물'),
-('木', 'き', 'もく, ぼく', '나무'),
-('山', 'やま', 'さん', '산');
+INSERT INTO kanji (glyph, kunyomi, onyomi, meaning, reading) VALUES
+('学', 'まなぶ', 'がく, がっ', '배우다, 학문', '학'),
+('火', 'ひ', 'か', '불', '火'),
+('水', 'みず', 'すい', '물', '水'),
+('木', 'き', 'もく, ぼく', '나무', '木'),
+('山', 'やま', 'さん', '산', '山');
 
 select * from kanji;
-UPDATE kanji
-SET reading = '학1'
-WHERE glyph = '学';
-UPDATE kanji
-SET reading = '화'
-WHERE glyph = '火';
-UPDATE kanji
-SET reading = '수'
-WHERE glyph = '水';
-UPDATE kanji
-SET reading = '목'
-WHERE glyph = '木';
-UPDATE kanji
-SET reading = '산'
-WHERE glyph = '山';
 
-INSERT INTO kanji (id, glyph, meaning, reading, kunyomi, onyomi)
-VALUES (6, '人', '사람', '인', 'ひと', 'じん, にん');
+INSERT INTO kanji (glyph, meaning, reading, kunyomi, onyomi)
+VALUES ( '人', '사람', '인', 'ひと', 'じん, にん');
 ---------------------------------
 -- 훈독 단어
 INSERT INTO kanji_kunyomi (kanji_id, kun_glyph, kun_kana, kun_meaning)

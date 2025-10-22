@@ -28,6 +28,9 @@ const PageTest = () => {
     fetchOnSentenceList()
       .then(setOnSent)
       .catch(e => setErr(e.message));
+	fetchVocabList()
+      .then(setVocab)
+      .catch(e => setErr(e.message));
   }, []);
 
   return (
@@ -82,8 +85,8 @@ const PageTest = () => {
         <h3>JLPT 단어</h3>
         <ul>
           {vocab.map(v => (
-            <li key={v.id}>
-              {v.word} ({v.reading}) - {v.meaning} [{v.level}]
+            <li key={v.vocaId}>
+              {v.word} ({v.reading}) - {v.meaningKr} [{v.jlptLevel}]
             </li>
           ))}
         </ul>

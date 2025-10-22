@@ -18,7 +18,7 @@ public class VocabController {
 
     private final KanjiService kanjiService;
 
-    @GetMapping
+    @GetMapping("/vocab")
     public List<JlptVocabDto> getAllVocab() {
         return kanjiService.getAll();
     }

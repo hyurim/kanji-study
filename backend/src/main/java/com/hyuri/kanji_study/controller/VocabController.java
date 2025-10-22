@@ -13,12 +13,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @Slf4j
-@RequestMapping("/api")
+@RequestMapping("/api/vocab")
 public class VocabController {
 
     private final KanjiService kanjiService;
 
-    @GetMapping("/vocab")
+    @GetMapping("/list")
     public List<JlptVocabDto> getAllVocab() {
         return kanjiService.getAll();
     }

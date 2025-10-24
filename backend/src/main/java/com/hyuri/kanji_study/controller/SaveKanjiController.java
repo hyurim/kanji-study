@@ -1,12 +1,15 @@
 package com.hyuri.kanji_study.controller;
 
 import com.hyuri.kanji_study.dto.SaveKanjiDto;
+import com.hyuri.kanji_study.repository.UserRepository;
 import com.hyuri.kanji_study.security.AuthenticatedUser;
 import com.hyuri.kanji_study.service.KanjiService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +27,13 @@ import java.util.List;
 public class SaveKanjiController {
 
     private final KanjiService kanjiService;
+    private final UserRepository userRepo;
+
+    private Long currentUserId(Authentication auth) {
+        var user = userRepo.findByLoginId(auth.getName())
+                .orElseThrow(() -> new UsernameNotFoundException("사용자 없음"));
+        return user.getUserId();
+    }
 
     // 저장(중복 저장시 그대로 기존값 반환)
     @PostMapping("/{kanjiId}")

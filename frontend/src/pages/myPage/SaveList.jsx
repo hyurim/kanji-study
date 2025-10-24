@@ -36,12 +36,12 @@ const SavedList = () => {
         const k = mapById.get(s.kanjiId);
         return k ? { ...k, _savedAt: s.createdAt } : null;
       })
-      .filter(Boolean);
+      .filter(Boolean)
+	  .sort((a, b) => new Date(b._savedAt) - new Date(a._savedAt));
   }, [saved, mapById]);
 
   const onRemove = async (kanjiId) => {
     if (!kanjiId || removingIds.has(kanjiId)) return;
-    // (선택) 확인창
     if (!confirm("이 한자를 저장함에서 삭제할까요?")) return;
 
     const nextRemoving = new Set(removingIds);

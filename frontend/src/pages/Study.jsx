@@ -6,6 +6,9 @@ import {
   fetchKunSentenceList,
   fetchOnSentenceList,
 } from "../services/kanji";
+import { fetchSavedKanjiList } from "../services/save";
+import { saveKanji as apiSaveKanji } from "../services/save";
+
 
 const Study = () => {
   const [list, setList] = useState([]);
@@ -22,6 +25,8 @@ const Study = () => {
     kunSentByKanji: {}, 
     onSentByKanji: {},
   });
+  const [saving, setSaving] = useState(false);
+  const [savedSet, setSavedSet] = useState(() => new Set());
 
   useEffect(() => {
     setLoading(true);
@@ -93,7 +98,15 @@ const Study = () => {
     loadDetails();
   }, [loaded]);
 
+  useEffect(() => {
+	    fetchSavedKanjiList()
+	      .then((items) => setSavedSet(new Set((items || []).map(it => it.kanjiId))))
+	      .catch(() => {});
+	  }, []);
+	
+
   const curId = cur?.id;
+  const isSaved = !!(curId && savedSet.has(curId));
 
   const kunyomiList = (curId && maps.kunyomiByKanji[curId]) || [];
   const onyomiList  = (curId && maps.onyomiByKanji[curId])  || [];
@@ -109,6 +122,24 @@ const Study = () => {
     ...kunSentences.map(s => ({ ...s, _type: "kun" })),
     ...onSentences.map(s => ({ ...s, _type: "on" })),
   ]), [kunSentences, onSentences]);
+
+  const onSave = async () => {
+	if (!curId || saving) return;
+    if (savedSet.has(curId)) {
+      alert("이미 저장된 한자입니다.");
+      return;
+    }
+	setSaving(true);
+	try {
+		await apiSaveKanji(curId);
+		setSavedSet(prev => new Set(prev).add(curId));
+		alert("저장되었습니다.");
+		} catch (e) {
+		alert(e?.message || "저장에 실패했습니다.");
+		} finally {
+		setSaving(false);
+		}
+	};
 
   return (
     <div>
@@ -127,7 +158,23 @@ const Study = () => {
             marginBottom: 12,
           }}
         >
-          <div style={{ fontSize: 48, lineHeight: 1.2 }}>{cur.glyph}</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ fontSize: 48, lineHeight: 1.2 }}>{cur.glyph}</div>
+            <button
+              onClick={onSave}
+              disabled={saving || isSaved}
+              style={{
+                marginLeft: "auto",
+                padding: "6px 10px",
+                borderRadius: 8,
+                border: "1px solid #ccc",
+                background: isSaved ? "#eef8ee" : (saving ? "#eee" : "#f5f5f5"),
+                cursor: (saving || isSaved) ? "not-allowed" : "pointer",
+              }}
+            >
+              {isSaved ? "저장됨" : (saving ? "저장 중…" : "저장")}
+            </button>
+          </div>
           <div style={{ fontSize: 18, marginTop: 8 }}>{cur.meaning} {cur.reading}</div>
           <div style={{ marginTop: 8 }}>훈독: {cur.kunyomi || "-"}</div>
           <div>음독: {cur.onyomi || "-"}</div>

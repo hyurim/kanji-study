@@ -121,6 +121,16 @@ CREATE TABLE chat_participant (
 
 
 ---------------------------------
+-- 알림 테이블
+CREATE TABLE notification (
+    notification_id BIGSERIAL PRIMARY KEY,                   -- PK
+    user_id         BIGINT NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
+    type            VARCHAR(50) NOT NULL,                    -- "MESSAGE", "STUDY_REMINDER"
+    message         TEXT NOT NULL,                           -- 표시할 문구
+    is_read         BOOLEAN NOT NULL DEFAULT FALSE,          -- 읽음 여부
+    created_at      TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP -- 생성 시각
+);
+
 ---------------------------------
 
 select * from kanji;
@@ -129,8 +139,9 @@ select * from kanji_kunyomi;
 select * from on_sentence;
 select * from kun_sentence;
 SELECT * FROM users;
+SELECT * FROM USER_SAVED_KANJI;
 
-
+DROP TABLE notification;
  DROP TABLE users;
  DROP TABLE user_saved_kanji;
  

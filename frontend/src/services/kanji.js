@@ -62,9 +62,3 @@ export async function fetchOnSentenceById(id) {
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   return res.json();
 }
-
-export const fetchVocabList = async () => {
-  const res = await fetch(`${API_BASE}/api/vocab/list`);
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  return await res.json();
-};

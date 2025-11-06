@@ -5,9 +5,9 @@ import {
   fetchOnyomiList,
   fetchKunSentenceList,
   fetchOnSentenceList,
-} from "../services/kanji";
-import { fetchSavedKanjiList } from "../services/save";
-import { saveKanji as apiSaveKanji } from "../services/save";
+} from "../services/Kanji";
+import { fetchSavedKanjiList } from "../services/Save";
+import { saveKanji as apiSaveKanji } from "../services/Save";
 
 
 const Study = () => {

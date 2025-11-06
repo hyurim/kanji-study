@@ -9,7 +9,7 @@ export default function Dashboard(){
       {user ? (
         <p>Welcome, <b>{user?.name || user?.loginId}</b>!</p>
       ) : (
-        <p>You are not logged in. This page will show public content.</p>
+        <p>로그인이 필요합니다.</p>
       )}
     </div>
   );

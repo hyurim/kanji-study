@@ -4,7 +4,7 @@ CREATE TABLE kanji (
   kunyomi	  TEXT,						-- 훈독
   onyomi	  TEXT,						-- 음독
   meaning     TEXT NOT NULL,            -- 뜻
-  reading VARCHAR(100) NOT NULL			-- 읽는 법 
+  level		  TEXT 						-- 수준
 );
 
 ---------------------------------
@@ -140,6 +140,9 @@ select * from on_sentence;
 select * from kun_sentence;
 SELECT * FROM users;
 SELECT * FROM USER_SAVED_KANJI;
+SELECT * FROM NOTIFICATION N;
+SELECT * FROM jlpt_vocab;
+SELECT * FROM user_saved_vocab;
 
 DROP TABLE notification;
  DROP TABLE users;

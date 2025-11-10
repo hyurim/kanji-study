@@ -30,9 +30,9 @@ public class KanjiQueryServiceImpl implements KanjiQueryService {
                 k.getId(),
                 k.getGlyph(),
                 k.getMeaning(),
-                k.getReading(),
                 k.getKunyomi(),
-                k.getOnyomi()
+                k.getOnyomi(),
+                k.getLevel()
         );
     }
     @Override
@@ -47,9 +47,9 @@ public class KanjiQueryServiceImpl implements KanjiQueryService {
                     .id(entity.getId())
                     .glyph(entity.getGlyph())
                     .meaning(entity.getMeaning())
-                    .reading(entity.getReading())
                     .kunyomi(entity.getKunyomi())
                     .onyomi(entity.getOnyomi())
+                    .level(entity.getLevel())
                     .build();
             dtoList.add(dto);
             log.debug("DTO = {}", dto);

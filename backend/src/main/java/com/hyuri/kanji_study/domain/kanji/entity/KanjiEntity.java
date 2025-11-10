@@ -47,9 +47,10 @@ public class KanjiEntity {
     @Column(nullable = false)
     private String meaning;
 
-    /** 음 */
-    @Column(name = "reading", nullable = false)
-    private String reading;
+    /** 수준(N5, N4...) */
+    @Column(name = "level")
+    private String level;
+
 
     @OneToMany(mappedBy = "kanji", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default

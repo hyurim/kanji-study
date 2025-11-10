@@ -10,6 +10,8 @@ select * from kanji;
 
 INSERT INTO kanji (glyph, meaning, reading, kunyomi, onyomi)
 VALUES ( '人', '사람', '인', 'ひと', 'じん, にん');
+
+TRUNCATE TABLE kanji_kunyomi, kanji RESTART IDENTITY CASCADE;
 ---------------------------------
 -- 훈독 단어
 INSERT INTO kanji_kunyomi (kanji_id, kun_glyph, kun_kana, kun_meaning)

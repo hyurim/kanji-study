@@ -13,8 +13,7 @@ public class KanjiDto {
     private Long id;
     private String glyph;
     private String meaning;
-    private String reading;
     private String kunyomi;
     private String onyomi;
-
+    private String level;
 }

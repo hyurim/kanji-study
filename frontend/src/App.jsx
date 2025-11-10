@@ -6,7 +6,6 @@ import SaveSelect from "./pages/myPage/SaveSelect";
 import SaveKanjiList from "./pages/myPage/SaveKanjiList";
 import SaveVocaList from "./pages/myPage/SaveVocaList";
 import Study from "./pages/Study";
-import PageTest from "./pages/PageTest";
 import Login from "./pages/User/Login";
 import Signup from "./pages/User/Signup";
 import Logout from "./pages/User/Logout";
@@ -25,7 +24,6 @@ const App = () => {
         <NavLink to="/saveSelect" style={linkStyle}>저장함</NavLink>
         <NavLink to="/study" style={linkStyle}>한자 테스트</NavLink>
         <NavLink to="/vocab" style={linkStyle}>JLPT 테스트</NavLink>
-        <NavLink to="/pagetest" style={linkStyle}>단어 출력 테스트</NavLink>
 
         {!user ? (
           <>
@@ -49,7 +47,6 @@ const App = () => {
         <Route path="/saveSelect" element={<SaveSelect />} />
         <Route path="/study" element={<Study />} />
         <Route path="/vocab" element={<Vocab />} />
-        <Route path="/pagetest" element={<PageTest />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />

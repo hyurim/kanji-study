@@ -175,7 +175,7 @@ const Study = () => {
               {isSaved ? "저장됨" : (saving ? "저장 중…" : "저장")}
             </button>
           </div>
-          <div style={{ fontSize: 18, marginTop: 8 }}>{cur.meaning} {cur.reading}</div>
+          <div style={{ fontSize: 18, marginTop: 8 }}>{cur.meaning}</div>
           <div style={{ marginTop: 8 }}>{cur.kunyomi || "-"} / {cur.onyomi || "-"}</div>
 
           <div style={{ 
